@@ -1,5 +1,5 @@
 {
     "serverPort": 5000,
-    "dbUrl": "mongodb+srv://viacheslavorlov:661683@cloud.gx6tqfa.mongodb.net/?retryWrites=true&w=majority",
+    "dbUrl": "mongodb://localhost:27017/?authMechanism=DEFAULT",
     "secretKey": "very-secret-key"
 }

@@ -1,0 +1,13 @@
+@import "../../utils/colors";
+
+input {
+    border: none;
+    border-bottom: @font-color solid 2px;
+    width: 350px;
+    padding: 3px;
+    &:focus {
+        outline: none;
+        background-color: @active-color;
+        transform: scale(1.1);
+    }
+}

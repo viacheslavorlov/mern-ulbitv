@@ -3,7 +3,7 @@ const bcryptjs = require('bcryptjs');
 const config = require('config');
 const jwt = require('jsonwebtoken');
 const {check, validationResult} = require("express-validator");
-
+const authMiddleware = require('../middleware/auth.middleware');
 const Router = require('express');
 
 
@@ -14,7 +14,7 @@ router.post('/registration', [
 	check('password', 'Password must be longer then 3 and shorter then 12 simbols').isLength({min: 3, max: 12})
 ], async (req, res) => {
 	try {
-		console.log(req.body)
+
 		const errors = validationResult(req);
 
 		if (!errors.isEmpty()) {
@@ -40,44 +40,64 @@ router.post('/registration', [
 
 
 router.post('/login', async (req, res) => {
-	try {
-		const {email, password} = req.body;
-		const user = await User.findOne({email});
-		if (!user) {
-			return res.status(404).json({message: "user not found"});
-		}
-		const isPassValid = bcryptjs.compareSync(password, user.password);
-		if (!isPassValid) {
-			console.log('password incorrect')
-			return res.status(400).json({message: "password incorrect"})
-		}
-
-		const token = jwt.sign({id: user.id}, config.get("secretKey"), {expiresIn: '1h'});
-		console.log({
-			token, user: {
-				id: user.id,
-				email: user.email,
-				diskSpace: user.diskSpace,
-				usedSpace: user.usedSpace,
-				avatar: user.avatar || 'no avatar'
-			}});
-		return res.json({
-			token,
-			user: {
-				id: user.id,
-				email: user.email,
-				diskSpace: user.diskSpace,
-				usedSpace: user.usedSpace,
-				avatar: user.avatar || 'no avatar'
+		try {
+			const {email, password} = req.body;
+			const user = await User.findOne({email});
+			if (!user) {
+				return res.status(404).json({message: "user not found"});
 			}
-		});
-	} catch
-		(e)
-		{
+			const isPassValid = bcryptjs.compareSync(password, user.password);
+			if (!isPassValid) {
+				console.log('password incorrect')
+				return res.status(400).json({message: "password incorrect"})
+			}
+
+			const token = jwt.sign({id: user.id}, config.get("secretKey"), {expiresIn: '1h'});
+			console.log({
+				token, user: {
+					id: user.id,
+					email: user.email,
+					diskSpace: user.diskSpace,
+					usedSpace: user.usedSpace,
+					avatar: user.avatar || 'no avatar'
+				}
+			});
+			return res.json({
+				token,
+				user: {
+					id: user.id,
+					email: user.email,
+					diskSpace: user.diskSpace,
+					usedSpace: user.usedSpace,
+					avatar: user.avatar || 'no avatar'
+				}
+			});
+		} catch (e) {
 			console.log(e);
 			res.send({message: 'server error'});
 		}
 	}
 )
 
-	module.exports = router;
+router.get('/auth', authMiddleware, async (req, res) => {
+		try {
+			const user = await User.findOne({_id: req.user.id});
+			const token = jwt.sign({id: user.id}, config.get("secretKey"), {expiresIn: '1h'});
+			return res.json({
+				token,
+				user: {
+					id: user.id,
+					email: user.email,
+					diskSpace: user.diskSpace,
+					usedSpace: user.usedSpace,
+					avatar: user.avatar || 'no avatar'
+				}
+			});
+		} catch (e) {
+			console.log(e);
+			res.send({message: 'server error'});
+		}
+	}
+)
+
+module.exports = router;

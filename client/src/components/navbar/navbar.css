@@ -1,0 +1,22 @@
+.navbar {
+  display: flex;
+  justify-content: center;
+  height: 90px;
+  width: 100vw;
+  background-color: white;
+}
+.navbar__header {
+  margin-left: 10px;
+  font-size: 1.5em;
+  font-weight: bold;
+}
+.navbar__login {
+  margin-left: auto;
+  margin-right: 20px;
+  cursor: pointer;
+}
+.container {
+  width: 90vw;
+  display: flex;
+}
+/*# sourceMappingURL=navbar.css.map */
