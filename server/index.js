@@ -9,16 +9,6 @@ const PORT = config.get('serverPort');
 app.use(express.json());
 app.use('/api/auth', router);
 
-//* from site MongoDB
-// const { MongoClient, ServerApiVersion } = require('mongodb');
-// const uri = "mongodb+srv://viacheslavorlov:<password>@cloud.gx6tqfa.mongodb.net/?retryWrites=true&w=majority";
-// const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
-// client.connect(err => {
-// 	const collection = client.db("test").collection("devices");
-// 	// perform actions on the collection object
-// 	client.close();
-// });
-
 const start = async () => {
 	try {
 
