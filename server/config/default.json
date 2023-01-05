@@ -1,5 +1,6 @@
 {
     "serverPort": 5000,
-    "dbUrl": "mongodb://localhost:27017/?authMechanism=DEFAULT",
-    "secretKey": "very-secret-key"
+    "dbUrl": "mongodb://localhost:27017/",
+    "secretKey": "very-secret-key",
+    "filePath": "D:\\Програмирование\\mern-ulbitv\\server\\files"
 }
